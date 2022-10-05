@@ -18,5 +18,7 @@
 
     <modules>
         <module>account-service</module>
+        <module>card-service</module>
+        <module>loan-service</module>
     </modules>
 </project>
