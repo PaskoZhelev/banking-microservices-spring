@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping
 public class AccountController {
     private final AccountRepository accountRepository;
 
