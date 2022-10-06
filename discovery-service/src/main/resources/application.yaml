@@ -1,0 +1,17 @@
+
+spring:
+  application:
+    name: discovery
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://localhost:8071/
+  # add colors to the console logging in spring
+  output:
+    ansi:
+      enabled: ALWAYS
+  # disable ribbon because it is is in maintenance mode
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false

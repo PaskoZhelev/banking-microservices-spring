@@ -11,3 +11,10 @@ spring:
       server:
         native:
           search-locations: classpath:/config
+  # add colors to the console logging in spring
+  output:
+    ansi:
+      enabled: ALWAYS
+
+encrypt:
+  key: QeThVmYq3t6w9z$C

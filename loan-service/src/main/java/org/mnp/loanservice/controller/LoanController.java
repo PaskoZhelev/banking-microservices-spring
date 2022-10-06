@@ -25,6 +25,8 @@ public class LoanController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<List<Loan>> getLoansByCustomerId(@PathVariable(value = "customerId") final int customerId) {
+        System.out.println("Invoking Loans Microservice");
+
         final List<Loan> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(customerId);
 
         return new ResponseEntity<>(loans, HttpStatus.OK);

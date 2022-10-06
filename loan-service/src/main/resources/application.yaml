@@ -12,3 +12,47 @@ spring:
   h2:
     console:
       enabled: true
+  application:
+    name: loans
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://localhost:8071/
+  # add colors to the console logging in spring
+  output:
+    ansi:
+      enabled: ALWAYS
+
+#enable actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+# discovery service props
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+# Configuring info endpoint details
+info:
+  app:
+    name: Loans Microservice
+    description: Banking Loans App
+    version: 1.0.0
+
+# provide shutdown endpoint on actuator
+endpoints:
+  shutdown:
+    enabled: true

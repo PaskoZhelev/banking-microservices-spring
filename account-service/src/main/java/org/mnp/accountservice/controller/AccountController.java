@@ -3,9 +3,12 @@ package org.mnp.accountservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.mnp.accountservice.config.AccountsConfiguration;
-import org.mnp.accountservice.model.Account;
+import org.mnp.accountservice.model.*;
 import org.mnp.accountservice.repository.AccountRepository;
+import org.mnp.accountservice.service.client.CustomerDetailsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +23,12 @@ public class AccountController {
 
     private final AccountsConfiguration accountsConfiguration;
 
-    public AccountController(AccountRepository accountRepository, AccountsConfiguration accountsConfiguration) {
+    private final CustomerDetailsService customerDetailsService;
+
+    public AccountController(final AccountRepository accountRepository, final AccountsConfiguration accountsConfiguration, final CustomerDetailsService customerDetailsService) {
         this.accountRepository = accountRepository;
         this.accountsConfiguration = accountsConfiguration;
+        this.customerDetailsService = customerDetailsService;
     }
 
     @GetMapping
@@ -49,6 +55,36 @@ public class AccountController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/details/{customerId}")
+    //@CircuitBreaker(name = "detailsForCustomerSupportApp")
+    @Retry(name = "retryOnCustomerDetails", fallbackMethod = "getCustomerDetailsFallback")
+    public ResponseEntity<CustomerDetails> getCustomerDetails(@PathVariable(value = "customerId") final int customerId) {
+        final Account account = accountRepository.findByCustomerId(customerId);
+
+        if (account != null) {
+            final List<Loan> customerLoans = customerDetailsService.getCustomerLoans(customerId);
+            final List<Card> customerCards = customerDetailsService.getCustomerCards(customerId);
+
+            final CustomerDetails customerDetails = CustomerDetails.of(account, customerLoans, customerCards);
+            return new ResponseEntity<>(customerDetails, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<CustomerDetails> getCustomerDetailsFallback(final int customerId, final Throwable t) {
+        final Account account = accountRepository.findByCustomerId(customerId);
+
+        if (account != null) {
+            final List<Loan> customerLoans = customerDetailsService.getCustomerLoans(customerId);
+
+            final CustomerDetails customerDetails = CustomerDetails.of(account, customerLoans, List.of());
+            return new ResponseEntity<>(customerDetails, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
 }

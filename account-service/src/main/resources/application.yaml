@@ -18,4 +18,62 @@ spring:
     active: dev
   config:
     import: optional:configserver:http://localhost:8071/
+  # add colors to the console logging in spring
+  output:
+    ansi:
+      enabled: ALWAYS
 
+#enable actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+# discovery service props
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+# Configuring info endpoint details
+info:
+  app:
+    name: Accounts Microservice
+    description: Banking Accounts App
+    version: 1.0.0
+
+# provide shutdown endpoint on actuator
+endpoints:
+  shutdown:
+    enabled: true
+
+# circuit breaking
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      detailsForCustomerSupportApp:
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30000
+        permittedNumberOfCallsInHalfOpenState: 2
+  retry:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      retryOnCustomerDetails:
+        maxRetryAttempts: 3
+        waitDuration: 2000
