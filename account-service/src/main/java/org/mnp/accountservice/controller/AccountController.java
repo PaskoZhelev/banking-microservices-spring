@@ -9,6 +9,8 @@ import org.mnp.accountservice.config.AccountsConfiguration;
 import org.mnp.accountservice.model.*;
 import org.mnp.accountservice.repository.AccountRepository;
 import org.mnp.accountservice.service.client.CustomerDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,9 @@ import java.util.Properties;
 @RestController
 @RequestMapping
 public class AccountController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+
     private final AccountRepository accountRepository;
 
     private final AccountsConfiguration accountsConfiguration;
@@ -38,6 +43,8 @@ public class AccountController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<Account> getByCustomerIdAccounts(@PathVariable(value = "customerId") final int customerId) {
+        LOGGER.info("Fetching accounts information for customerId: {}", customerId);
+
         final Account account = accountRepository.findByCustomerId(customerId);
 
         if (account != null) {
@@ -61,6 +68,8 @@ public class AccountController {
     //@CircuitBreaker(name = "detailsForCustomerSupportApp")
     @Retry(name = "retryOnCustomerDetails", fallbackMethod = "getCustomerDetailsFallback")
     public ResponseEntity<CustomerDetails> getCustomerDetails(@PathVariable(value = "customerId") final int customerId) {
+        LOGGER.info("Fetching Customer Details information for customerId: {}", customerId);
+
         final Account account = accountRepository.findByCustomerId(customerId);
 
         if (account != null) {

@@ -2,6 +2,8 @@ package org.mnp.cardservice.controller;
 
 import org.mnp.cardservice.model.Card;
 import org.mnp.cardservice.repository.CardRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class CardController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CardController.class);
 
     private final CardRepository cardRepository;
 
@@ -25,6 +29,8 @@ public class CardController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<List<Card>> getLoansByCustomerId(@PathVariable(value = "customerId") final int customerId) {
+        LOGGER.info("Fetching cards information for customerId: {}", customerId);
+
         final List<Card> loans = cardRepository.findByCustomerId(customerId);
 
         return new ResponseEntity<>(loans, HttpStatus.OK);

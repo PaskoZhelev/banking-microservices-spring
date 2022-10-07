@@ -10,6 +10,6 @@ import java.util.List;
 
 @FeignClient("loans")
 public interface LoansClient {
-    @RequestMapping(method = RequestMethod.GET, value = "/loans/{customerId}", consumes = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/{customerId}", consumes = "application/json")
     List<Loan> getLoanDetails(@PathVariable("customerId") int customerId);
 }

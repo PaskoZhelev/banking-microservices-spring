@@ -2,6 +2,8 @@ package org.mnp.loanservice.controller;
 
 import org.mnp.loanservice.model.Loan;
 import org.mnp.loanservice.repository.LoanRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class LoanController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoanController.class);
 
     private final LoanRepository loanRepository;
 
@@ -25,7 +29,7 @@ public class LoanController {
 
     @GetMapping("/{customerId}")
     public ResponseEntity<List<Loan>> getLoansByCustomerId(@PathVariable(value = "customerId") final int customerId) {
-        System.out.println("Invoking Loans Microservice");
+        LOGGER.info("Fetching loans information for customerId: {}", customerId);
 
         final List<Loan> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(customerId);
 

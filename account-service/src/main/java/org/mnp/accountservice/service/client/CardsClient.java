@@ -12,6 +12,6 @@ import java.util.List;
 
 @FeignClient("cards")
 public interface CardsClient {
-    @RequestMapping(method = RequestMethod.GET, value = "/cards/{customerId}", consumes = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/{customerId}", consumes = "application/json")
     List<Card> getCardDetails(@PathVariable("customerId") int customerId);
 }
