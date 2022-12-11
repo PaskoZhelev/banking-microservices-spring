@@ -10,6 +10,4 @@ jobs:
 
     steps:
       - name: Test
-        run:
-          - echo 'Hello World!'
-          - echo $PWD
+        run: echo 'Hello World!'
