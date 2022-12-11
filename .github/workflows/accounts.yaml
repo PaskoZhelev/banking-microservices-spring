@@ -9,5 +9,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test
-        run: echo 'Hello World!'
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          cache: maven
+      - name: Build
+        run: mvn clean install
