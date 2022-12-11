@@ -35,9 +35,9 @@ jobs:
         env:
           OWNER: '${{ github.repository_owner }}'
 
-      - name: Build image and push
+      - name: Build accounts image and push
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: account-service
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/accounts:latest
