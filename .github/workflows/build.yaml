@@ -6,6 +6,8 @@ on:
 
 jobs:
   build-and-push:
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
     runs-on: ubuntu-latest
 
     steps:
@@ -40,4 +42,4 @@ jobs:
         with:
           context: account-service
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/accounts:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-accounts:latest
