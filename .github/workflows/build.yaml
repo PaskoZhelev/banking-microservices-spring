@@ -19,3 +19,9 @@ jobs:
           cache: maven
       - name: Build
         run: mvn clean install
+      - name: Login to image repository
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
