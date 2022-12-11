@@ -57,24 +57,3 @@ jobs:
           context: loan-service
           push: true
           tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-loans-service:latest
-
-      - name: Build config image and push
-        uses: docker/build-push-action@v2
-        with:
-          context: config-server
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-config-service:latest
-
-      - name: Build discovery image and push
-        uses: docker/build-push-action@v2
-        with:
-          context: discovery-service
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-discovery-service:latest
-
-      - name: Build gateway image and push
-        uses: docker/build-push-action@v2
-        with:
-          context: gateway-service
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-gateway-service:latest
