@@ -42,4 +42,4 @@ jobs:
         with:
           context: account-service
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-accounts:latest
+          tags: ${{ env.REPO_NAME }}-accounts:latest
