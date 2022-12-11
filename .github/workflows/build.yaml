@@ -40,4 +40,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ OWNER_LC }}/accounts:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/accounts:latest
