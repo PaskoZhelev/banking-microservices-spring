@@ -1,6 +1,6 @@
 # Banking Microservices Spring
 
-Banking Microservices Project using:
+Sample Banking Microservices Project using:
 - Spring Boot
 - Spring Cloud Gateway
 - Spring Cloud Config
@@ -9,6 +9,9 @@ Banking Microservices Project using:
 - Eureka (Discovery Service)
 - Spring Cloud Sleuth (Distributed Tracing)
 - Zipkin (Log Aggregation)
+- Docker
+- Kubernetes
+- Github Actions
 
 
 For running Zipkin with Docker:
