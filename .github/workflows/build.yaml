@@ -9,15 +9,6 @@ jobs:
     env:
       REPO_NAME: ${{ github.event.repository.name }}
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service:
-          - account-service
-          - card-service
-          - loan-service
-          - config-server
-          - discovery-service
-          - gateway-service
     steps:
       - name: Checkout
         uses: actions/checkout@v3
