@@ -9,7 +9,15 @@ jobs:
     env:
       REPO_NAME: ${{ github.event.repository.name }}
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        services:
+          - account-service
+          - card-service
+          - loan-service
+          - config-server
+          - discovery-service
+          - gateway-service
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -37,23 +45,9 @@ jobs:
         run: |
           echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
 
-      - name: Build accounts image and push
+      - name: Build image and push
         uses: docker/build-push-action@v2
         with:
-          context: account-service
+          context: ${{ matrix.package }}
           push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-accounts-service:latest
-
-      - name: Build card image and push
-        uses: docker/build-push-action@v2
-        with:
-          context: card-service
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-cards-service:latest
-
-      - name: Build loan image and push
-        uses: docker/build-push-action@v2
-        with:
-          context: loan-service
-          push: true
-          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-loans-service:latest
+          tags: ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_NAME }}-${{ matrix.package }}:latest
