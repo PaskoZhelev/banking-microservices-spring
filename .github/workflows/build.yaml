@@ -23,6 +23,12 @@ jobs:
       - name: Build
         run: mvn clean install -DskipTests
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: package
+
   push:
     needs: build
     env:
@@ -40,6 +46,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: package
 
       - name: Login to image repository
         uses: docker/login-action@v2
