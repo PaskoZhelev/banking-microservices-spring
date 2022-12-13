@@ -11,7 +11,7 @@ services:
       - banking-app
 
   configserver:
-    image: ghcr.io/paskozhelev/banking-microservices-spring-config-server:latest
+    build: ../config-server
     mem_limit: 700m
     ports:
       - "8071:8071"
@@ -22,7 +22,7 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   discovery:
-    image: ghcr.io/paskozhelev/banking-microservices-spring-discovery-service:latest
+    build: ../discovery-service
     mem_limit: 700m
     ports:
       - "8070:8070"
@@ -42,7 +42,7 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   accounts:
-    image: ghcr.io/paskozhelev/banking-microservices-spring-account-service:latest
+    build: .
     ports:
       - "8080:8080"
     networks:
@@ -63,7 +63,7 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   loans:
-    image: ghcr.io/paskozhelev/banking-microservices-spring-loan-service:latest
+    build: ../loan-service
     ports:
       - "8090:8090"
     networks:
@@ -84,7 +84,7 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   cards:
-    image: ghcr.io/paskozhelev/banking-microservices-spring-card-service:latest
+    build: ../card-service
     ports:
       - "9000:9000"
     networks:
@@ -105,7 +105,7 @@ services:
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   gatewayserver:
-    image: ghcr.io/paskozhelev/banking-microservices-spring-gateway-service:latest
+    build: ../gateway-service
     mem_limit: 700m
     ports:
       - "8072:8072"
